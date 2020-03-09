@@ -1,10 +1,25 @@
-import tableauserverclient as TSC
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+import pytesseract
+import pyglet
 
-tableau_auth = TSC.TableauAuth('lr2956@tc.columbia.edu', 'xEIi910bbf8e', 'https://10ax.online.tableau.com/#/site/mylrcomdev628667/home')
-server = TSC.Server('https://tableauserver.suny.edu/t/IRPublic/views/PublicDashboard-ADAChanges/Dashboard?%3Aembed=y&%3AshowVizHome=no&%3Ahost_url=https%3A%2F%2Ftableauserver.suny.edu%2F&%3Aembed_code_version=3&%3Atabs=yes&%3Atoolbar=yes&%3AshowAppBanner=false&%3Adisplay_spinner=no&%3AloadOrderID=0')
+from selenium import webdriver
+browser=webdriver.Firefox()
+DB = browser.get('https://tableauserver.suny.edu/t/IRPublic/views/PublicDashboard-ADAChanges/Dashboard?%3Aembed=y&%3AshowVizHome=no&%3Ahost_url=https%3A%2F%2Ftableauserver.suny.edu%2F&%3Aembed_code_version=3&%3Atabs=yes&%3Atoolbar=yes&%3AshowAppBanner=false&%3Adisplay_spinner=no&%3AloadOrderID=0')
 
-with server.auth.sign_in(tableau_auth):
-    all_datasources, pagination_item = server.datasources.get()
-    print("\nThere are {} datasources on site: ".format(pagination_item.total_available))
-    print([datasource.name for datasource in all_datasources])
+DB.image.get
 
+
+def ocr_core(filename):
+    """
+    This function will handle the core OCR processing of images.
+    """
+    text = pytesseract.image_to_string(Image.open(filename))  # We'll use Pillow's Image class to open the image and
+    # Tesseract to detect the string in the image
+    return text
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+print(ocr_core('C:\\Users\\Leonardo\\Documents\\tmp\\suny_webscrape\\ocr_sample.png'))
